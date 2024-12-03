@@ -117,9 +117,11 @@ export class SupplyAPIScheduler extends Scheduler {
                     .add(DWFTransferBalance)
             );
 
-            if (TotalSupply.gte(BigNumber.from(storage.totalSupply))) {
+            if (TotalSupply.gte(BigNumber.from(storage.totalSupply).sub(BigNumber.from(10 ** 9)))) {
                 storage.circulatingSupply = CirculatingSupply.toString();
                 storage.totalSupply = TotalSupply.toString();
+            } else {
+                console.error(`Not updated`);
             }
             console.log(`* Circulating Supply: ${storage.circulatingSupply}`);
             console.log(`* Total Supply: ${storage.totalSupply}`);
