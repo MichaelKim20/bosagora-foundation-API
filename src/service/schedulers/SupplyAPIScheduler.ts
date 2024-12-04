@@ -14,7 +14,6 @@ export class SupplyAPIScheduler extends Scheduler {
     private readonly BridgeLiquidity: BigNumber; // Bridge Liquidity Supply
     private readonly BridgeFoundationLiquidity: BigNumber; // Bridge Foundation Stake Amount
     private readonly FoundationAddress: string;
-    private readonly MarketingAddress1: string;
     private readonly MarketingAddress2: string;
     private readonly BountyAddress: string;
     private readonly TeamMemberAddress: string;
@@ -33,7 +32,6 @@ export class SupplyAPIScheduler extends Scheduler {
         this.BridgeLiquidity = BigNumber.from("10000000000000");
 
         this.FoundationAddress = "0x2529379ac2c209058adf4c28f2c963878ea5e7bd";
-        this.MarketingAddress1 = "0x8f4FCe6B4a7a16CEDb8Eb8fCd732360AA310853a";
         this.MarketingAddress2 = "0x4327bb17a6408d8ff94c7be88c20c521ad85d6d7";
         this.BountyAddress = "0x30e5794f87003b15a40827be2cc1c2ae4bc79435";
         this.TeamMemberAddress = "0xabf16eafac1f269a97935b4e3f7e158b61ead3f3";
@@ -71,8 +69,6 @@ export class SupplyAPIScheduler extends Scheduler {
             console.log(`* InitialSupply: ${this.InitialSupply}`);
             const FoundationBalance = BigNumber.from(await this.BOAcontract.balanceOf(this.FoundationAddress));
             console.log(`FoundationBalance: ${FoundationBalance}`);
-            const Marketing1Balance = BigNumber.from(await this.BOAcontract.balanceOf(this.MarketingAddress1));
-            console.log(`Marketing1Balance: ${Marketing1Balance}`);
             const Marketing2Balance = BigNumber.from(await this.BOAcontract.balanceOf(this.MarketingAddress2));
             console.log(`Marketing2Balance: ${Marketing2Balance}`);
             const BountyBalance = BigNumber.from(await this.BOAcontract.balanceOf(this.BountyAddress));
@@ -106,25 +102,25 @@ export class SupplyAPIScheduler extends Scheduler {
             let TotalSupply = this.InitialSupply.add(RewardBalance).add(CommonsBudgetBalance).sub(BurnedBalance);
 
             let CirculatingSupply = TotalSupply.sub(
-                FoundationBalance.add(Marketing1Balance)
+                FoundationBalance
                     .add(Marketing2Balance)
                     .add(BountyBalance)
                     .add(this.BridgeLiquidity)
-                    .add(this.BridgeFoundationLiquidity)
+                    // .add(this.BridgeFoundationLiquidity)
                     .add(TeamMemberBalance)
                     .add(HoledAirdropBalance)
                     .add(CommonsBudgetBalance)
                     .add(DWFTransferBalance)
             );
-
+    
             if (TotalSupply.gte(BigNumber.from(storage.totalSupply).sub(BigNumber.from(10 ** 9)))) {
                 storage.circulatingSupply = CirculatingSupply.toString();
                 storage.totalSupply = TotalSupply.toString();
             } else {
                 console.error(`Not updated`);
             }
-            console.log(`* Circulating Supply: ${storage.circulatingSupply}`);
-            console.log(`* Total Supply: ${storage.totalSupply}`);
+            console.log(`* Circulating Supply: ${storage.circulatingSupply} -- ${CirculatingSupply.toString()}`);
+            console.log(`* Total Supply: ${storage.totalSupply} -- ${TotalSupply.toString()}`);
         } catch (error) {
             console.log(`Failed to execute the API scheduler ${error}`);
             logger.error(`Failed to execute the API scheduler: ${error}`);
