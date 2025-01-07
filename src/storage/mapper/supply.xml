@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="supply">
+    <insert id="postSupply">
+        INSERT INTO supply
+        (
+            "initial_supply"        ,
+            "foundation"            ,
+            "marketing1"            ,
+            "marketing2"            ,
+            "bounty"                ,
+            "team_member"           ,
+            "dwf"                   ,
+            "hold_airdrop"          ,
+            "burned"                ,
+            "reward"                ,
+            "commons_budget"        ,
+            "total_supply"          ,
+            "circulating_supply"    ,
+            "timestamp"
+        )
+        VALUES
+        (
+            #{initial_supply}       ,
+            #{foundation}           ,
+            #{marketing1}           ,
+            #{marketing2}           ,
+            #{bounty}               ,
+            #{team_member}          ,
+            #{dwf}                  ,
+            #{hold_airdrop}         ,
+            #{burned}               ,
+            #{reward}               ,
+            #{commons_budget}       ,
+            #{total_supply}         ,
+            #{circulating_supply}   ,
+            now()
+        )
+    </insert>
+
+    <select id="getSupply">
+        SELECT
+            *
+        FROM
+            supply
+        ORDER BY sequence DESC
+            LIMIT 1;
+    </select>
+
+    <delete id="removeOver30Days">
+        DELETE
+        FROM
+            supply
+        WHERE
+            EXTRACT(DAY FROM (now() - "timestamp")) >= 30
+    </delete>
+
+    <delete id="removeOverOneMin">
+        DELETE
+        FROM
+            supply
+        WHERE
+            EXTRACT(MINUTE FROM (now() - "timestamp")) >= 1
+    </delete>
+</mapper>

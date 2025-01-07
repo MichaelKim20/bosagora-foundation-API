@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="table">
+    <sql id="supply">
+        CREATE TABLE IF NOT EXISTS supply
+        (
+            "sequence" BIGINT generated always as identity,
+            "initial_supply" BIGINT NOT NULL,
+            "foundation" BIGINT NOT NULL,
+            "marketing1" BIGINT NOT NULL,
+            "marketing2" BIGINT NOT NULL,
+            "bounty" BIGINT NOT NULL,
+            "team_member" BIGINT NOT NULL,
+            "dwf" BIGINT NOT NULL,
+            "hold_airdrop" BIGINT NOT NULL,
+            "burned" BIGINT NOT NULL,
+            "reward" BIGINT NOT NULL,
+            "commons_budget" BIGINT NOT NULL,
+            "total_supply" BIGINT NOT NULL,
+            "circulating_supply" BIGINT NOT NULL,
+            "timestamp" TIMESTAMP,
+            PRIMARY KEY("sequence")
+        );
+        CREATE SEQUENCE IF NOT EXISTS supply_sequence_seq;
+    </sql>
+
+    <select id="create_table">
+        <include refid="supply"/>
+    </select>
+
+    <select id="drop_table">
+        DROP TABLE supply;
+    </select>
+</mapper>

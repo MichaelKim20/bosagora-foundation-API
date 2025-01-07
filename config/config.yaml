@@ -1,0 +1,37 @@
+server:
+  address: ${HOST_IP}
+  port: ${HOST_PORT}
+
+database:
+  host: "${DATABASE_HOST}"
+  user: "${DATABASE_USER}"
+  password: "${DATABASE_PASSWORD}"
+  database: "${DATABASE_NAME}"
+  scheme: "${DATABASE_SCHEME}"
+  port: "${DATABASE_PORT}"
+  connectionTimeoutMillis: 2000
+  max: 100
+
+agora_scan_database:
+  host: "${AGORA_SCAN_DATABASE_HOST}"
+  user: "${AGORA_SCAN_DATABASE_USER}"
+  password: "${AGORA_SCAN_DATABASE_PASSWORD}"
+  database: "${AGORA_SCAN_DATABASE_NAME}"
+  scheme: "${AGORA_SCAN_DATABASE_SCHEME}"
+  port: "${AGORA_SCAN_DATABASE_PORT}"
+  connectionTimeoutMillis: 2000
+  max: 100
+
+logging:
+  level: ${LOGGING_LEVEL}
+
+setting:
+  boaRpcUrl: ${BOA_RPC_URL}
+  ethRpcUrl: ${ETH_RPC_URL}
+
+scheduler:
+  enable: true
+  items:
+    - name: boa
+      enable: true
+      expression: "*/10 * * * * *"
